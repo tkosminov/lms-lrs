@@ -1,0 +1,46 @@
+{
+  "APP_SETTINGS": {
+    "port": 8080,
+    "body_limit": "5000mb",
+    "body_parameter_limit": 5000000
+  },
+  "CORS_SETTINGS": {
+    "allowed_origins": [],
+    "allowed_paths": [],
+    "allowed_methods": [
+      "GET",
+      "POST",
+      "PUT",
+      "PATCH",
+      "DELETE",
+      "OPTIONS"
+    ],
+    "allowed_credentials": false,
+    "allowed_headers": []
+  },
+  "LOGGER_SETTINGS": {
+    "level": "info",
+    "silence": [
+      "healthz"
+    ]
+  },
+  "DB_SETTINGS": {
+    "host": "localhost",
+    "port": 5432,
+    "username": "postgres",
+    "password": "postgres",
+    "database": "course_lrs_example",
+    "logging": "all",
+    "synchronize": true
+  },
+  "JWT_SETTINGS": {
+    "secret_key": "secret_key",
+    "algorithm": "HS512",
+    "access_token_expires_in": 20,
+    "refresh_token_expires_in": 10080
+  },
+  "GRAPHQL_GUARD": {
+    "username": "admin",
+    "password": "password"
+  }
+}
