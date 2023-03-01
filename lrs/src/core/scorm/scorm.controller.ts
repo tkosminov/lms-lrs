@@ -9,10 +9,12 @@ import { ScormResource } from './resource/resource.entity';
 import { ScormStatement } from './statement/statement.entity';
 import { IItem, ScormCourse } from './course/course.entity';
 
+import { EScormType } from './dto/base-value.dto';
 import { ScormCreateDTO } from './dto/create.dto';
 import { ScormGetValueDTO } from './dto/get-value.dto';
 import { ScormSetValueDTO } from './dto/set-value.dto';
 import { ScormStatementResult } from './statement-result/statement-result.entity';
+import { ScormTerminateDTO } from './dto/terminate.dto';
 
 const integer_variables_regexp: RegExp[] = [
   new RegExp(/cmi\.location/gm),
@@ -239,6 +241,52 @@ export class ScormController {
       .execute();
 
     return { variable: data.variable, value: data.value };
+  }
+
+  @Post('terminate')
+  protected async terminate(@Body() data: ScormTerminateDTO) {
+    const actor = await this.findOrCreateActor(data.user_id);
+
+    const course = await this.dataSource.getRepository(ScormCourse).findOne({ where: { id: data.course_id } });
+
+    const resource = await this.dataSource
+      .getRepository(ScormResource)
+      .findOne({ where: { course_id: course.id, identifier: data.resource_identifier } });
+
+    let statement: ScormStatement;
+
+    const value = 'logout';
+    let variable = 'cmi.exit';
+
+    if (data.scorm_type === EScormType.SCORM) {
+      variable = 'cmi.core.exit';
+    }
+
+    statement = await this.dataSource.getRepository(ScormStatement).findOne({ where: { resource_id: resource.id, variable } });
+
+    if (!statement) {
+      statement = new ScormStatement();
+      statement.id = v4();
+      statement.resource_id = resource.id;
+      statement.variable = variable;
+
+      await this.dataSource.getRepository(ScormStatement).save(statement);
+    }
+
+    await this.dataSource
+      .getRepository(ScormStatementResult)
+      .createQueryBuilder()
+      .insert()
+      .into(ScormStatementResult)
+      .values({
+        statement_id: statement.id,
+        actor_id: actor.id,
+        value,
+      })
+      .orUpdate(['value'], ['statement_id', 'actor_id'])
+      .execute();
+
+    return { variable, value };
   }
 
   private async findOrCreateActor(user_id: string) {

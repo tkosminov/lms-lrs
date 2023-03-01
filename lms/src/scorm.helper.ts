@@ -234,6 +234,8 @@ export class ScormCourse {
   }
 
   public sendRequest(url: string, data: any, type = 'json') {
+    data.scorm_type = this.constructor.name
+
     try {
       const xhr = new XMLHttpRequest();
       const json = JSON.stringify(data);
