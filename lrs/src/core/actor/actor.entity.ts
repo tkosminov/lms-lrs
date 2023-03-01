@@ -1,5 +1,5 @@
 import { Column, CreateDateColumn, Entity, Index, OneToMany, PrimaryGeneratedColumn, UpdateDateColumn } from 'typeorm';
-import { ScormStatement } from '../scorm/statement/statement.entity';
+import { ScormStatementResult } from '../scorm/statement-result/statement-result.entity';
 
 @Entity()
 export class Actor {
@@ -22,6 +22,6 @@ export class Actor {
   @Column('uuid', { nullable: false })
   public user_id: string;
 
-  @OneToMany(() => ScormStatement, (statement) => statement.resource)
-  public statements: ScormStatement[];
+  @OneToMany(() => ScormStatementResult, (statement_result) => statement_result.actor)
+  public scorm_statement_results: ScormStatementResult[];
 }

@@ -4,7 +4,7 @@ export interface ICommonData {
 }
 
 export class ScormCourse {
-  public values: Record<string, string> = {};
+  public values: Record<string, string | number> = {};
   public version = '1.0';
   private readonly skip_datamodel_error: string[] = ['cmi.core.lesson_location', 'cmi.location'];
 
@@ -171,7 +171,7 @@ export class ScormCourse {
   //   }
   // }
 
-  public SetValue(variable: string, value: string) {
+  public SetValue(variable: string, value: string | number) {
     if (!this.initialized) {
       this.last_error = 132;
       this.last_error = 301;
@@ -205,7 +205,7 @@ export class ScormCourse {
     return 'true';
   }
 
-  public validate_set_variable(variable: string, value: string) {
+  public validate_set_variable(variable: string, value: string | number) {
     const re = new RegExp('cmi.objectives.[0-9]*.id');
     if (variable.match(re)) {
       let existing_value;
@@ -224,7 +224,7 @@ export class ScormCourse {
 
     if (variable === 'cmi.completion_status') {
       const possible_values = ['incomplete', 'completed', 'not attempted', 'unknown'];
-      if (!possible_values.includes(value)) {
+      if (!possible_values.includes(value as string)) {
         this.last_error = 406;
         return false;
       }

@@ -1,6 +1,6 @@
 import { IsUUID } from 'class-validator';
 
-export class ScormCourseBaseValueDTO {
+export class ScormBaseValueDTO {
   @IsUUID('4')
   public user_id: string;
 

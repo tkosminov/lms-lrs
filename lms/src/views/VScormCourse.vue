@@ -15,10 +15,17 @@
     <div class="col-3">
       <ul>
         <li v-for="item of scorm_course.items" :key="item.identifier" @click="setSco(item)">
-          <h4>{{ item.title }}</h4>
+          <p>{{ item.title }}</p>
           <ul v-if="item.items?.length">
             <li v-for="i of item.items" :key="i.identifier" @click="setSco(i)">
-              {{ i.title }}
+              <p>{{ i.title }}</p>
+
+              <ul v-if="i.items?.length">
+                <li v-for="ii of i.items" :key="ii.identifier" @click="setSco(ii)">
+                  <p>{{ ii.title }}</p>
+                </li>
+              </ul>
+
             </li>
           </ul>
         </li>
@@ -104,8 +111,8 @@ async function setSco(item: IItem) {
     }
   }
 
-  course_window.value.API = new API({ user_id, course_id: scorm_course.value!.id }, api_endpoint, { course_identifier: scorm_course.value!.identifier, resource_identifier: item.identifierref! });
-  course_window.value.API_1484_11 = new API_1484_11({ user_id, course_id: scorm_course.value!.id }, '/scorm', { course_identifier: scorm_course.value!.identifier, resource_identifier: item.identifierref! });
+  course_window.value.API = new API({ user_id, course_id: scorm_course.value!.id }, api_endpoint, { course_identifier: scorm_course.value!.identifier, resource_identifier: item.identifier! });
+  course_window.value.API_1484_11 = new API_1484_11({ user_id, course_id: scorm_course.value!.id }, '/scorm', { course_identifier: scorm_course.value!.identifier, resource_identifier: item.identifier! });
 
   scorm_iframe.value = `${course_base_url}/uploads/${scorm_course.value!.hash_sum}/${item.href}`
 }

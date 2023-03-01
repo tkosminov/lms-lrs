@@ -1,8 +1,19 @@
-import { Column, CreateDateColumn, Entity, Index, JoinColumn, ManyToOne, PrimaryGeneratedColumn, UpdateDateColumn } from 'typeorm';
+import {
+  Column,
+  CreateDateColumn,
+  Entity,
+  Index,
+  JoinColumn,
+  ManyToOne,
+  OneToMany,
+  PrimaryGeneratedColumn,
+  UpdateDateColumn,
+} from 'typeorm';
 
-import { Actor } from '../../actor/actor.entity';
 import { ScormResource } from '../resource/resource.entity';
+import { ScormStatementResult } from '../statement-result/statement-result.entity';
 
+@Index(['resource_id', 'variable'], { unique: true })
 @Entity()
 export class ScormStatement {
   @PrimaryGeneratedColumn('uuid')
@@ -25,7 +36,7 @@ export class ScormStatement {
   public variable: string;
 
   @Column('text', { nullable: true })
-  public value: string;
+  public base_value: string;
 
   @Index()
   @Column('uuid', { nullable: false })
@@ -35,11 +46,6 @@ export class ScormStatement {
   @JoinColumn({ name: 'resource_id' })
   public resource: ScormResource;
 
-  @Index()
-  @Column('uuid', { nullable: false })
-  public actor_id: string;
-
-  @ManyToOne(() => Actor, { nullable: false, onDelete: 'CASCADE' })
-  @JoinColumn({ name: 'actor_id' })
-  public actor: Actor;
+  @OneToMany(() => ScormStatementResult, (statement_result) => statement_result.statement)
+  public results: ScormStatementResult[];
 }

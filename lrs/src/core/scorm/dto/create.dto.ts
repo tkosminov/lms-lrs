@@ -1,7 +1,8 @@
 import { IsArray, IsString } from 'class-validator';
-import { IItem } from '../course.entity';
 
-export class ScormCourseCreateDTO {
+import { IItem } from '../course/course.entity';
+
+export class ScormCreateDTO {
   @IsString()
   public hash_sum: string;
 

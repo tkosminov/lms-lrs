@@ -13,6 +13,7 @@ import {
 import { ScormCourse } from '../course/course.entity';
 import { ScormStatement } from '../statement/statement.entity';
 
+@Index(['course_id', 'identifier'], { unique: true })
 @Entity()
 export class ScormResource {
   @PrimaryGeneratedColumn('uuid')

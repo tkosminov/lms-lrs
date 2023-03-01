@@ -196,8 +196,8 @@ function recursiveParseScrotmItems(item: Element, resources_elements: Element) {
   const item_title = item.elements?.find(e => e.name === 'title')
 
   const parsed_item: IItem = {
-    identifier: item.attributes!.identifier!,
-    identifierref: item.attributes!.identifierref,
+    identifier: item.attributes!.identifier! as string,
+    identifierref: item.attributes!.identifierref as string,
     title: `${item_title?.elements?.find(e => e.type === 'text')?.text}`,
   }
 
