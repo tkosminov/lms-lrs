@@ -144,7 +144,15 @@ export class ScormController {
         .findOne({ where: { actor_id: actor.id, statement_id: statement.id } });
 
       if (result) {
-        result_value = result.value;
+        if (data.variable === 'cmi.interactions._count') {
+          const parsed_result_value = parseInt(result.value, 10);
+
+          await this.dataSource.getRepository(ScormStatementResult).update(result.id, { value: `${parsed_result_value + 1}` });
+
+          result_value = `${parsed_result_value + 1}`;
+        } else {
+          result_value = result.value;
+        }
       } else {
         result_value = statement.base_value;
 
@@ -322,6 +330,10 @@ export class ScormController {
       case 'cmi.mode': // SCORM 2004
       case 'cmi.core.lesson_mode': // SCORM 1.1, SCORM 1.2
         value = 'normal';
+
+        break;
+      case 'cmi.interactions._count':
+        value = '0';
 
         break;
       default:
