@@ -15,17 +15,16 @@
     <div class="col-3">
       <ul>
         <li v-for="item of scorm_course.items" :key="item.identifier" @click="setSco(item)">
-          <p>{{ item.title }}</p>
+          <p>{{ item.title }} <b>{{ item.identifier === scorm_current_resource ? 'active' : '' }}</b></p>
           <ul v-if="item.items?.length">
             <li v-for="i of item.items" :key="i.identifier" @click="setSco(i)">
-              <p>{{ i.title }}</p>
+              <p>{{ i.title }} <b>{{ i.identifier === scorm_current_resource ? 'active' : '' }}</b></p>
 
               <ul v-if="i.items?.length">
                 <li v-for="ii of i.items" :key="ii.identifier" @click="setSco(ii)">
-                  <p>{{ ii.title }}</p>
+                  <p>{{ ii.title }} <b>{{ ii.identifier === scorm_current_resource ? 'active' : '' }}</b></p>
                 </li>
               </ul>
-
             </li>
           </ul>
         </li>
@@ -38,10 +37,10 @@
 </template>
 
 <script setup lang="ts">
-import { type Ref, ref, onBeforeMount, defineProps } from "vue";
+import { type Ref, ref, onBeforeMount, defineProps, watch, onBeforeUnmount, type WatchStopHandle } from "vue";
 import axios from "axios";
 
-import { API, API_1484_11 } from '@/scorm.helper';
+import { API, API_1484_11 } from '@/scorm.helper-2';
 import type { ICourse, IItem } from '@/types'
 
 const props = defineProps({
@@ -54,11 +53,20 @@ const course_base_url: string = 'http://localhost:80'
 const user_id = '6dd214fa-f833-407b-a465-bc991b1f8639'
 
 const scorm_course: Ref<ICourse | null> = ref(null);
+const scorm_current_resource: Ref<string | null > = ref(null);
+const scorm_course_items: Ref<IItem[]> = ref([]);
+
 const scorm_iframe: Ref<string | null> = ref(null)
-const course_window: Ref<Window & { API?: API, API_1484_11?: API_1484_11 }> = ref(window)
+const course_window: Ref<Window & { API?: API, API_1484_11?: API_1484_11 } | null> = ref(window)
+
+const unwatchs: WatchStopHandle[] = []
 
 onBeforeMount(async () => {
   scorm_course.value = await onLoadScormCourse()
+
+  for (const i of scorm_course.value.items) {
+    scorm_course_items.value.push(...recursiveParseItems(i))
+  }
 })
 
 async function onLoadScormCourse() {
@@ -67,14 +75,32 @@ async function onLoadScormCourse() {
   return res;
 }
 
+function recursiveParseItems(item: IItem) {
+  const items: IItem[] = [];
+
+  if (item.href) {
+    items.push(item)
+  }
+
+  if (item.items?.length) {
+    for (const i of item.items) {
+      items.push(...recursiveParseItems(i))
+    }
+  }
+
+  return items;
+}
+
 async function setSco(item: IItem) {
   if (!item.href?.length) {
     return;
   }
 
+  scorm_current_resource.value = item.identifier;
+
   const current_api = getCurrentApi()
 
-  if (current_api) {
+  if (current_api && current_api.initialized) {
     if (current_api instanceof API) {
       current_api.LMSSetValue('cmi.core.exit', 'suspend');
 
@@ -111,23 +137,50 @@ async function setSco(item: IItem) {
     }
   }
 
-  course_window.value.API = new API({ user_id, course_id: scorm_course.value!.id }, api_endpoint, { course_identifier: scorm_course.value!.identifier, resource_identifier: item.identifier! });
-  course_window.value.API_1484_11 = new API_1484_11({ user_id, course_id: scorm_course.value!.id }, '/scorm', { course_identifier: scorm_course.value!.identifier, resource_identifier: item.identifier! });
+  course_window.value!.API = new API(
+    '/scorm',
+    {
+      user_id, course_id: scorm_course.value!.id
+    },
+    {
+      course_identifier: scorm_course.value!.identifier,
+      resource_identifier: item.identifier,
+    },
+    scorm_course_items.value.map((i) => i.identifier),
+  )
+
+  course_window.value!.API_1484_11 = new API_1484_11(
+    '/scorm',
+    {
+      user_id, course_id: scorm_course.value!.id
+    },
+    {
+      course_identifier: scorm_course.value!.identifier,
+      resource_identifier: item.identifier,
+    },
+    scorm_course_items.value.map((i) => i.identifier),
+  )
 
   scorm_iframe.value = `${course_base_url}/uploads/${scorm_course.value!.hash_sum}/${item.href}`
 }
 
 function getCurrentApi() {
-  if (course_window.value.API?.initialized) {
-    return course_window.value.API;
+  if (course_window.value!.API?.initialized) {
+    return course_window.value!.API;
   }
 
-  if (course_window.value.API_1484_11?.initialized) {
-    return course_window.value.API_1484_11;
+  if (course_window.value!.API_1484_11?.initialized) {
+    return course_window.value!.API_1484_11;
   }
 
   return null;
 }
+
+onBeforeUnmount(() => {
+  for (const unwatch of unwatchs) {
+    unwatch()
+  }
+})
 </script>
 
 <style></style>
