@@ -24,8 +24,8 @@ const integer_variables_regexp: RegExp[] = [
   new RegExp(/cmi\.interactions\._count/gm),
   new RegExp(/cmi\.interactions\.[0-9]+\.objectives\._count/gm),
   new RegExp(/cmi\.interactions\.[0-9]+\.correct_responses\._count/gm),
-  new RegExp(/cmi\.comments_from_learner\._count /gm),
-  new RegExp(/cmi\.comments_from_lms\._count /gm),
+  new RegExp(/cmi\.comments_from_learner\._count/gm),
+  new RegExp(/cmi\.comments_from_lms\._count/gm),
 ];
 
 const float_variables_regexp: RegExp[] = [
