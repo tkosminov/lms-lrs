@@ -2,8 +2,10 @@
  * https://scorm.com/scorm-explained/technical-scorm/run-time/run-time-reference/
  * документация скорма
  *
- *
- * https://github.com/cosnics/cosnics-archive/blob/cd4a6ccf995be3e5d9541cf0f94555b246bd24a0/dokeos/application/lib/weblcms/tool/learning_path/javascript/scorm/dokeos_api.js
+ * https://scorm.com/scorm-explained/technical-scorm/sequencing/sequencing-definition-model/
+ * документация к правилом доступности итемов скорма
+ * 
+ * src/Chamilo/Application/Weblcms/Tool/Implementation/LearningPath/Resources/Javascript/Scorm/ChamiloApi.js
  * оригинальный файл
  */
 
@@ -390,7 +392,7 @@ export class API_1484_11 extends ScormCourse {
 }
 
 export class API extends ScormCourse {
-  public version: string = '1.2';
+  public version: string = '1.0';
 
   public LMSInitialize = this.Initialize;
   public LMSFinish = this.Terminate;
