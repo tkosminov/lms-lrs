@@ -21,3 +21,7 @@
 * Run LRS
 * Run Nginx
 * Open `http://localhost:80`
+
+## Course Examples
+
+* [scorm](https://scorm.com/scorm-explained/technical-scorm/golf-examples/)
