@@ -1,12 +1,7 @@
 /**
+ * scorm documentation
  * https://scorm.com/scorm-explained/technical-scorm/run-time/run-time-reference/
- * документация скорма
- *
  * https://scorm.com/scorm-explained/technical-scorm/sequencing/sequencing-definition-model/
- * документация к правилом доступности итемов скорма
- * 
- * src/Chamilo/Application/Weblcms/Tool/Implementation/LearningPath/Resources/Javascript/Scorm/ChamiloApi.js
- * оригинальный файл
  */
 
 export interface ICourseData {

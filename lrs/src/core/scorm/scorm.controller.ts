@@ -7,7 +7,7 @@ import { Actor } from '../actor/actor.entity';
 
 import { ScormResource } from './resource/resource.entity';
 import { ScormStatement } from './statement/statement.entity';
-import { IItem, ScormCourse } from './course/course.entity';
+import { ScormCourse } from './course/course.entity';
 
 import { EScormType } from './dto/base-value.dto';
 import { ScormCreateDTO } from './dto/create.dto';
@@ -70,30 +70,9 @@ export class ScormController {
     const parsed_statements: Array<Partial<ScormStatement>> = [];
 
     for (const item of data.items) {
-      const parsed_item = this.parseItemrecursive(item, parsed_course.id);
-
-      parsed_resources.push(...parsed_item.parsed_resources);
-      parsed_statements.push(...parsed_item.parsed_statements);
-    }
-
-    await this.dataSource.getRepository(ScormCourse).insert(parsed_course);
-    await this.dataSource.getRepository(ScormResource).insert(parsed_resources);
-
-    if (parsed_statements.length) {
-      await this.dataSource.getRepository(ScormStatement).insert(parsed_statements);
-    }
-
-    return { course_id: parsed_course.id };
-  }
-
-  private parseItemrecursive(item: IItem, course_id: string) {
-    const parsed_resources: Array<Partial<ScormResource>> = [];
-    const parsed_statements: Array<Partial<ScormStatement>> = [];
-
-    if (item.identifierref) {
       const parsed_resource = {
         id: v4(),
-        course_id: course_id,
+        course_id: parsed_course.id,
         identifier: item.identifier,
       };
 
@@ -116,10 +95,14 @@ export class ScormController {
       }
     }
 
-    return {
-      parsed_resources,
-      parsed_statements,
-    };
+    await this.dataSource.getRepository(ScormCourse).insert(parsed_course);
+    await this.dataSource.getRepository(ScormResource).insert(parsed_resources);
+
+    if (parsed_statements.length) {
+      await this.dataSource.getRepository(ScormStatement).insert(parsed_statements);
+    }
+
+    return { course_id: parsed_course.id };
   }
 
   @Post('get_value')

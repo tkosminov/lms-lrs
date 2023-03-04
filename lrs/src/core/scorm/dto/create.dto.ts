@@ -1,6 +1,6 @@
 import { IsArray, IsString } from 'class-validator';
 
-import { IItem } from '../course/course.entity';
+import { IScormItem } from '../course/course.entity';
 
 export class ScormCreateDTO {
   @IsString()
@@ -13,5 +13,5 @@ export class ScormCreateDTO {
   public title: string;
 
   @IsArray()
-  public items: IItem[];
+  public items: IScormItem[];
 }

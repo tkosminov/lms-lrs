@@ -2,14 +2,12 @@ import { Column, CreateDateColumn, Entity, Index, OneToMany, PrimaryGeneratedCol
 
 import { ScormResource } from '../resource/resource.entity';
 
-export interface IItem {
+export interface IScormItem {
   identifier: string;
-  identifierref?: string;
   title: string;
-  type?: string;
-  href?: string;
-  items?: IItem[];
-  objective_ids?: string[];
+  type: string;
+  href: string;
+  objective_ids: string[];
 }
 
 @Entity()
@@ -42,7 +40,7 @@ export class ScormCourse {
   public title: string;
 
   @Column('jsonb', { nullable: false, default: '[]' })
-  public items: IItem[];
+  public items: IScormItem[];
 
   @OneToMany(() => ScormResource, (resource) => resource.course)
   public resources: ScormResource[];
