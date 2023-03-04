@@ -14,3 +14,10 @@
 * Set `root` path in `nginx.conf -> server -> uploads`
 * Copy `nginx.conf` in `/etc/nginx/conf.d`
 * Restart nginx
+
+## Run
+
+* Run LMS
+* Run LRS
+* Run Nginx
+* Open `http://localhost:80`
