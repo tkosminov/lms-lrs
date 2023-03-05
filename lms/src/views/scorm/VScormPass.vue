@@ -80,7 +80,8 @@ function selectSco(item: IScormItem) {
       scorm_course.value!.items.map((i) => i.identifier),
     )
   } else {
-    current_window.value!.API.values = {}
+    current_window.value!.API.values = {};
+    current_window.value!.API.scorm_next_resource = null;
     current_window.value!.API.course_data.resource_identifier = item.identifier;
     
     if (!current_window.value!.API.initialized) {
@@ -101,7 +102,8 @@ function selectSco(item: IScormItem) {
       scorm_course.value!.items.map((i) => i.identifier),
     )
   } else {
-    current_window.value!.API_1484_11.values = {}
+    current_window.value!.API_1484_11.values = {};
+    current_window.value!.API_1484_11.scorm_next_resource = null;
     current_window.value!.API_1484_11.course_data.resource_identifier = item.identifier;
 
     if (!current_window.value!.API_1484_11.initialized) {

@@ -85,8 +85,6 @@ export class ScormCourse {
     this.initialized = true;
     this.last_error = EScormError["No Error"];
 
-    localStorage.setItem(`${this.course_id}_scorm_next_resource`, '');
-
     return 'true';
   }
 
@@ -279,7 +277,7 @@ export class ScormCourse {
     const value = this.values['adl.nav.request'] as string;
 
     if (!value) {
-      this.scorm_next_resource = '';
+      this.scorm_next_resource = null;
 
       return;
     }
@@ -309,7 +307,6 @@ export class ScormCourse {
         }
       }
     }
-
   }
 
   public Commit(params: unknown) {
