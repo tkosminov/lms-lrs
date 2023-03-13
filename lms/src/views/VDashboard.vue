@@ -1,7 +1,7 @@
 <template>
   <div class="row">
     <div class="col-sm-12 col-md-12 col-lg-6 col-xl-6 p-5">
-      <CHr :title="'scorm'" :icon="'bi-plus'" @click-button="toScormUpload" />
+      <CHr :title="'scorm (1.1, 1.2, 2004)'" :icon="'bi-plus'" @click-button="toScormUpload" />
 
       <div class="row justify-content-md-center table-responsive">
         <table class="table table-hover table-sm">
@@ -47,7 +47,7 @@
     </div>
 
     <div class="col-sm-12 col-md-12 col-lg-6 col-xl-6 p-5">
-      <CHr :title="'xapi'" :icon="'bi-plus'" />
+      <CHr :title="'xapi (tincan, cmi5)'" :icon="'bi-plus'" />
     </div>
   </div>
 </template>
