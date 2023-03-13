@@ -3,4 +3,5 @@
 interface ImportMetaEnv {
   readonly VITE_APP_API: string;
   readonly VITE_APP_COOKIE_DOMAIN: string;
+  readonly VITE_APP_USER_ID: string;
 }

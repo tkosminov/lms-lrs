@@ -36,6 +36,42 @@ const scorm_routes: RouteRecordRaw[] = [
   },
 ]
 
+const xapi_routes: RouteRecordRaw[] = [
+  // {
+  //   name: "VXApiPass",
+  //   path: "/xapi/pass/:course_id",
+  //   props: true,
+  //   component: () => import("../views/xapi/VXApiPass.vue"),
+  //   meta: {
+  //     name: "routers.xapi.course",
+  //     icon: "house-door",
+  //     protected: false,
+  //   },
+  // },
+  // {
+  //   name: "VXApiLog",
+  //   path: "/xapi/log/:course_id",
+  //   props: true,
+  //   component: () => import("../views/xapi/VXApiLog.vue"),
+  //   meta: {
+  //     name: "routers.xapi.course",
+  //     icon: "house-door",
+  //     protected: false,
+  //   },
+  // },
+  {
+    name: "VXApiUpload",
+    path: "/xapi/upload",
+    props: true,
+    component: () => import("../views/xapi/VXApiUpload.vue"),
+    meta: {
+      name: "routers.xapi.course",
+      icon: "house-door",
+      protected: false,
+    },
+  },
+]
+
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   routes: [
@@ -50,6 +86,7 @@ const router = createRouter({
       },
     },
    ...scorm_routes,
+   ...xapi_routes,
   ]
 })
 

@@ -47,7 +47,7 @@
     </div>
 
     <div class="col-sm-12 col-md-12 col-lg-6 col-xl-6 p-5">
-      <CHr :title="'xapi (tincan, cmi5)'" :icon="'bi-plus'" />
+      <CHr :title="'xapi (tincan, cmi5)'" :icon="'bi-plus'" @click-button="toXApiUpload" />
     </div>
   </div>
 </template>
@@ -76,6 +76,10 @@ async function onLoadScormCourses() {
 
 function toScormUpload() {
   router.push({ name: 'VScormUpload' })
+}
+
+function toXApiUpload() {
+  router.push({ name: 'VXApiUpload' })
 }
 </script>
 

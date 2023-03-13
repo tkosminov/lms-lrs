@@ -7,6 +7,6 @@ import { XapiModule } from './xapi/xapi.module';
 @Module({
   imports: [ActorModule, ScormModule, XapiModule],
   providers: [],
-  exports: [ScormModule, XapiModule],
+  exports: [ActorModule, ScormModule, XapiModule],
 })
 export class CoreModule {}

@@ -39,9 +39,9 @@ const props = defineProps({
   course_id: { type: String, required: true },
 });
 
+const user_id = import.meta.env.VITE_APP_USER_ID
 const api_endpoint = import.meta.env.VITE_APP_API;
 const course_base_url: string = 'http://localhost:80'
-const user_id = '6dd214fa-f833-407b-a465-bc991b1f8639'
 
 const scorm_course: Ref<IScormCourse | null> = ref(null);
 const scorm_current_item_identifier: Ref<string | null> = ref(null);
